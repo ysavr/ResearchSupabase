@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Research Supabase</string>
+    <string name="product_list_text_screen_title">Product</string>
+</resources>

@@ -1,4 +1,4 @@
-package com.savr.researchsupabase.presentation.productlist
+package com.savr.researchsupabase.presentation.feature.productlist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

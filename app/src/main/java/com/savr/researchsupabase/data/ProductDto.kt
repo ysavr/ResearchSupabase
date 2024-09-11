@@ -1,12 +1,15 @@
 package com.savr.researchsupabase.data
 
+import com.savr.researchsupabase.core.UUIDSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.util.UUID
 
 @Serializable
 data class ProductDto(
     @SerialName("id")
-    val id: Int,
+    @Serializable(with = UUIDSerializer::class)
+    val id: UUID = UUID.randomUUID(),
     @SerialName("name")
     val name: String?,
     @SerialName("price")

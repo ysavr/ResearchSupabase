@@ -1,4 +1,4 @@
-package com.savr.researchsupabase.presentation.productlist
+package com.savr.researchsupabase.presentation.feature.productlist
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
@@ -6,7 +6,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -20,19 +25,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.navigation.NavController
 import com.savr.researchsupabase.R
+import com.savr.researchsupabase.presentation.navigation.AddProductDestination
 import com.savr.researchsupabase.presentation.viewmodel.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ProductListScreen(viewModel: ProductViewModel) {
+fun ProductListScreen(
+    navController: NavController,
+    viewModel: ProductViewModel = hiltViewModel()
+) {
     val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -65,6 +76,9 @@ fun ProductListScreen(viewModel: ProductViewModel) {
                 },
             )
         },
+        floatingActionButton = {
+            AddProductButton(onClick = { navController.navigate(AddProductDestination.route) })
+        }
     ) {
         val productList = viewModel.productList.collectAsState(initial = listOf()).value
         Box(Modifier.nestedScroll(state.nestedScrollConnection)) {
@@ -74,7 +88,7 @@ fun ProductListScreen(viewModel: ProductViewModel) {
             ) {
                 itemsIndexed(
                     items = productList,
-                    key = { _, product -> product.name }) { _, item ->
+                    key = { _, product -> product.id }) { _, item ->
                     ProductCard(item.name, item.price.toString(), item.imageUrl)
                 }
             }
@@ -83,5 +97,23 @@ fun ProductListScreen(viewModel: ProductViewModel) {
                 state = state,
             )
         }
+    }
+}
+
+@Composable
+private fun AddProductButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    FloatingActionButton(
+        modifier = modifier,
+        onClick = onClick,
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = null,
+        )
     }
 }

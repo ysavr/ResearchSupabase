@@ -84,7 +84,11 @@ dependencies {
     implementation(libs.ktor.client.android)
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.storage)
+    implementation(libs.androidx.navigation.common.ktx)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
     ksp(libs.hilt.compiler)
     ksp(libs.androidx.hilt.compiler)
 

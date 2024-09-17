@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.savr.researchsupabase.presentation.navigation.ProductListDestination
+import com.savr.researchsupabase.presentation.navigation.SignInDestination
 import com.savr.researchsupabase.presentation.navigation.navRegistration
 import com.savr.researchsupabase.ui.theme.ResearchSupabaseTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold { innerPadding ->
                     NavHost(
                         navController,
-                        startDestination = ProductListDestination.route,
+                        startDestination = SignInDestination.route,
                         Modifier.padding(innerPadding)
                     ) {
                         navRegistration(navController)

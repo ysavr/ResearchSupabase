@@ -1,15 +1,14 @@
-package com.savr.researchsupabase.presentation.viewmodel
+package com.savr.researchsupabase.presentation.feature.addproduct
 
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.savr.researchsupabase.core.resource.Resource
 import com.savr.researchsupabase.core.state.UIState
 import com.savr.researchsupabase.data.ProductDto
-import com.savr.researchsupabase.domain.Product
 import com.savr.researchsupabase.domain.ProductRepository
-import com.savr.researchsupabase.core.resource.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,16 +20,13 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductViewModel @Inject constructor(
+class AddProductViewModel @Inject constructor(
     private val productRepository: ProductRepository
-) : ViewModel() {
+): ViewModel() {
 
     companion object {
-        private const val TAG = "ProductViewModel"
+        private const val TAG = "AddProductViewModel"
     }
-
-    private val _productList = MutableStateFlow<List<Product>>(listOf())
-    val productList: Flow<List<Product>> = _productList
 
     private val _uiState = MutableStateFlow<UIState>(UIState.Idle)
     val uiState: StateFlow<UIState> = _uiState
@@ -43,21 +39,6 @@ class ProductViewModel @Inject constructor(
 
     private val _imageUrl = MutableStateFlow("")
     val imageUrl: Flow<String> = _imageUrl
-
-    fun getProducts() {
-        viewModelScope.launch {
-            val products = productRepository.getProducts().map {
-                Product(
-                    it.id,
-                    it.name ?: "",
-                    it.price ?: 0.0,
-                    it.imageUrl ?: "",
-                    it.createdAt ?: ""
-                )
-            }
-            _productList.emit(products)
-        }
-    }
 
     fun onNameChange(name: String) {
         _name.value = name

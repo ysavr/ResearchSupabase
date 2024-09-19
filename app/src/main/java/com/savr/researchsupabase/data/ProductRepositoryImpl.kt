@@ -1,5 +1,6 @@
 package com.savr.researchsupabase.data
 
+import android.util.Log
 import com.savr.researchsupabase.BuildConfig
 import com.savr.researchsupabase.core.BUCKET_PRODUCTS
 import com.savr.researchsupabase.core.TABLE_PRODUCTS
@@ -19,7 +20,13 @@ class ProductRepositoryImpl @Inject constructor(
 ) : ProductRepository {
 
     override suspend fun getProducts(): List<ProductDto> {
-        return supabaseClient.from(TABLE_PRODUCTS).select().decodeList<ProductDto>()
+        var products = listOf<ProductDto>()
+        try {
+            products = supabaseClient.from(TABLE_PRODUCTS).select().decodeList<ProductDto>()
+        } catch (e: Exception) {
+            Log.e("getProducts", "getProducts: error "+ e.message.toString())
+        }
+        return products
     }
 
     override suspend fun createProduct(product: ProductDto): Flow<Resource<String>> {

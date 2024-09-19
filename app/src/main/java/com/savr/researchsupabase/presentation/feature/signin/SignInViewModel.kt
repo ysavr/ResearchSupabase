@@ -42,7 +42,7 @@ class SignInViewModel @Inject constructor(
 
     fun signIn() {
         viewModelScope.launch {
-            authRepository.signUp(_email.value, _password.value).collect {
+            authRepository.signIn(_email.value, _password.value).collect {
                 when (it) {
                     is Resource.Error -> {
                         _uiState.emit(UIState.Failure(it.message.toString()))
